@@ -24,9 +24,9 @@ export const bootstrap = (app,express)=>{
     app.use('/ques',quesRouter)
     app.use('/review',reviewRouter)
     // app.use("/uploads",express.static('./uploads'))
-    app.all('*',(req,res,next)=>{
-        next(AppError.Error('not found endpoint',"fail",404))
-    })
+    // app.all('*',(req,res,next)=>{
+    //     next(AppError.Error('not found endpoint',"fail",404))
+    // })
     app.use(cors())  // Allow Access From anyWhere
 
     app.use(globalError)
