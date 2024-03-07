@@ -15,7 +15,7 @@ const signUp = catchError(async (req,res,next)=>{
     const {email,password,confirmPassword}=req.body;
     let isUser = await userModel.findOne({email})
     if(isUser) return next ( AppError.Error('account already exists' ,"failed", 409))
-    if (password != confirmPassword) return next (new AppError('password not equal confirmpassword' , 409))
+    if (password != confirmPassword) return next ( AppError.Error('password not equal confirmpassword',"failed" , 409))
     const user = new userModel(req.body)
     await user.save()
     let token = jwt.sign({email:user.email,name:user.name,id:user._id,role:user.role},process.env.SECRET_KEY , {expiresIn : 60 * 5})
