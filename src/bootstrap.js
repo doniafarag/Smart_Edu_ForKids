@@ -15,6 +15,7 @@ import reviewRouter from "./modules/review/review.routes.js"
 
 
 export const bootstrap = (app,express)=>{
+    
     app.use('/users',userRouter)
     app.use('/auth',authRouter)
     app.use('/subject',subjectRouter)

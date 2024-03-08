@@ -26,6 +26,18 @@ const addImageSubject = catchError(async (req,res,next)=>{
     
 })
 
+// const addAudioSubject = catchError(async (req,res,next)=>{
+//     const {public_id , secure_url} = await cloudinary.uploader.upload(
+//         req.file.path,
+//          {folder: `smartEducational/subject/${req.params.id}/audio`,resource_type:"video"}
+//         )
+//    const subject = await subjectModel.findByIdAndUpdate(req.params.id,
+//     {video:{public_id , secure_url}},
+//     {new:true}) 
+//     const subject1= await subjectModel.findById(req.params.id)
+//     res.json({ message:"Done",subject1,file:req.file })
+    
+// })
 const addAudioSubject = catchError(async (req,res,next)=>{
     const {public_id , secure_url} = await cloudinary.uploader.upload(
         req.file.path,
