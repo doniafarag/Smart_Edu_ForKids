@@ -53,8 +53,8 @@ const getAllCategs = catchError(async (req,res,next)=>{
   // execute query
 //   const  levels = await apiFeatures.mongooseQuery
     const query = req.query
-    const  units = await unitModel.find(query)
-    res.status(201).json({message: 'success',page:apiFeatures.page , units})
+    const  categs = await catModel.find(query)
+    res.status(201).json({message: 'success',page:apiFeatures.page , categs})
 })
 
 const getSingleCateg = catchError(async (req,res,next)=>{
