@@ -9,11 +9,11 @@ const catSchema=new Schema({
    // catName:{type:String},
    catName:{type:String,required:true},
    content:{type:String},
-   letter:{type:String},
-   text:{type:String},
-   image:{
+   letter:[{type:String}],
+   text:[{type:String}],
+   image:[{
       public_id:String , secure_url:String
-     },
+     }],
    video:{
       public_id:String , secure_url:String
      },

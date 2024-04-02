@@ -22,13 +22,24 @@ const addCateg= catchError(async(req,res)=>{
 })
 
 const addImageCateg = catchError(async (req,res,next)=>{
-    const {public_id , secure_url} = await cloudinary.uploader.upload(
-        req.file.path,
-        {folder: `smartEducational/categ/${req.params.id}/image`},
-        )
-   const categ = await catModel.findByIdAndUpdate(req.params.id,
-    {image:{public_id , secure_url}},
-    {new:true})
+    const imagesResources = [];
+
+    for (const file of req.files) {
+      const { public_id, secure_url } = await cloudinary.uploader.upload(
+        file.path,
+        {
+          folder: `smartEducational/categ/${req.params.id}/image`,
+        },
+      );
+  
+      imagesResources.push({ public_id, secure_url });
+    }
+  
+    const categ = await catModel.findByIdAndUpdate(
+      req.params.id,
+      { image: imagesResources },
+      { new: true }
+    );
     const categ1= await catModel.findById(req.params.id)
     res.json({ message:"Done",categ1,file:req.file })
     
