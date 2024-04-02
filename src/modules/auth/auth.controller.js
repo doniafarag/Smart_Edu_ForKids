@@ -20,8 +20,8 @@ const signUp = catchError(async (req,res,next)=>{
     await user.save()
     let token = jwt.sign({email:user.email,name:user.name,id:user._id,role:user.role},process.env.SECRET_KEY , {expiresIn : 60 * 5})
     let newConfirmEmailToken = jwt.sign({email:user.email,name:user.name,id:user._id,role:user.role},process.env.SECRET_KEY , {expiresIn : 60 * 60 * 24 * 30})
-     const requestNewEmailLink =`${req.protocol}://${req.headers.host}/api/v1/auth/newConfirmEmailToken/${newConfirmEmailToken}`
-     const link =`${req.protocol}://${req.headers.host}/api/v1/auth/confirmEmail/${token}`
+     const requestNewEmailLink =`${req.protocol}://${req.headers.host}/auth/newConfirmEmailToken/${newConfirmEmailToken}`
+     const link =`${req.protocol}://${req.headers.host}/auth/confirmEmail/${token}`
     // const html = `
     //  <a href="${link}"> Confirm Email </a>
     //  <br>
