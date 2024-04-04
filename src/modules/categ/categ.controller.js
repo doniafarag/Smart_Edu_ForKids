@@ -41,7 +41,7 @@ const addImageCateg = catchError(async (req,res,next)=>{
       { new: true }
     );
     const categ1= await catModel.findById(req.params.id)
-    res.json({ message:"Done",categ1,file:req.file })
+    res.json({ message:"Done",categ1 })
     
 })
 
@@ -72,18 +72,23 @@ const addAudioCateg = catchError(async (req,res,next)=>{
   //   {video:{public_id , secure_url}},
   //   {new:true}) 
     const categ1= await catModel.findById(req.params.id)
-    res.json({ message:"Done",categ1,file:req.file })
+    res.json({ message:"Done",categ1})
     
 })
 
 const getAllCategs = catchError(async (req,res,next)=>{
-    let apiFeatures = new ApiFeatures( catModel.find(), req.query)
-    .paginate().fields().filter().sort().search()
-  // execute query
-//   const  levels = await apiFeatures.mongooseQuery
-    const query = req.query
-    const  categs = await catModel.find(query)
-    res.status(201).json({message: 'success',page:apiFeatures.page , categs})
+//     let apiFeatures = new ApiFeatures( catModel.find(), req.query)
+//     .paginate().fields().filter().sort().search()
+//   // execute query
+// //   const  levels = await apiFeatures.mongooseQuery
+//     const query = req.query
+//     const  categs = await catModel.find(query)
+const queryObj={...req.query};
+        const excluded=['page','sort','limit','fields'];
+        excluded.forEach(el => delete queryObj[el]);
+        const query= catModel.find(queryObj);
+        const categs=await query;
+    res.status(201).json({message: 'success', categs})
 })
 
 const getSingleCateg = catchError(async (req,res,next)=>{
