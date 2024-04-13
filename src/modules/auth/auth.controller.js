@@ -10,16 +10,16 @@ import { customAlphabet } from "nanoid";
 
 
 const signUp = catchError(async (req,res,next)=>{
-    // console.log(req.protocol);
-    // console.log(req.headers.host);
+    console.log(req.protocol);
+    console.log(req.headers.host);
     const {email,password,confirmPassword}=req.body;
     let isUser = await userModel.findOne({email})
     if(isUser) return next ( AppError.Error('account already exists' ,"failed", 409))
     if (password != confirmPassword) return next ( AppError.Error('password not equal confirmpassword',"failed" , 409))
-    const user = new userModel(req.body)
-    await user.save()
-    let token = jwt.sign({email:user.email,name:user.name,id:user._id,role:user.role},process.env.SECRET_KEY , {expiresIn : 60 * 5})
-    let newConfirmEmailToken = jwt.sign({email:user.email,name:user.name,id:user._id,role:user.role},process.env.SECRET_KEY , {expiresIn : 60 * 60 * 24 * 30})
+    // const user = new userModel(req.body)
+    // await user.save()
+    let token = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 5})
+    let newConfirmEmailToken = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 60 * 24 * 30})
      const requestNewEmailLink =`${req.protocol}://${req.headers.host}/auth/newConfirmEmailToken/${newConfirmEmailToken}`
      const link =`${req.protocol}://${req.headers.host}/auth/confirmEmail/${token}`
     // const html = `
@@ -150,7 +150,7 @@ const signUp = catchError(async (req,res,next)=>{
 			padding-top: 25px; 
 			color: #000000;
 			font-family: sans-serif;" class="paragraph">
-              Hi <span style= color:#3969d5>${user.name}</span> ,<br> In order to start using your new account, you need to confirm your email address.
+              Hi <span style= color:#3969d5>${req.body.name}</span> ,<br> In order to start using your new account, you need to confirm your email address.
             </td>
           </tr>
           <tr>
@@ -228,17 +228,20 @@ const signUp = catchError(async (req,res,next)=>{
 </html>
     `;
     // =================================================
-    await sendEmail({to:email , subject:"Confirmation Email" , html})
-    res.status(201).json({message: 'success',user,token})
+   if( !(await sendEmail({to:email , subject:"Confirmation Email" , html}))){
+    return next ( AppError.Error('account Rejected' ,"failed", 400))
+  }
+
+  const user = await userModel.create(req.body)
+  res.status(201).json({message: 'success',user,token})
 })
 
 const confirmEmail = catchError(async (req,res,next)=>{
     const {token} = req.params;
     // console.log({token});
-    const decoded = jwt.verify(token, process.env.SECRET_KEY);
-    // console.log(decoded);
-    const user = await userModel.findByIdAndUpdate(decoded.id, {confirmEmail: true})
-    return user ? res.redirect('http://localhost:4200/#/login') 
+    const {email} = jwt.verify(token, process.env.SECRET_KEY);
+    const user = await userModel.updateOne({email}, {confirmEmail: true})
+    return user.matchedCount ? res.redirect('http://localhost:4200/#/login') 
     : res.send(`<a href="http://localhost:4200/#/signup">Ops looks like u donot have account yet follow me to signup now</a>`)
 })
 
@@ -246,9 +249,9 @@ const confirmEmail = catchError(async (req,res,next)=>{
 const newConfirmEmailToken = catchError(async (req,res,next)=>{
   const { token } = req.params;
 //   console.log({token});
-  const decoded = jwt.verify(token, process.env.SECRET_KEY);
+  const {email} = jwt.verify(token, process.env.SECRET_KEY);
 //   console.log(decoded);
-  const user = await userModel.findById(decoded.id)
+  const user = await userModel.findOne({email})
   if (!user) {
       return res.send(`<a href="http://localhost:4200/#/signup">Ops looks like u donot have account yet follow me to signup now</a>`)
   }
@@ -256,7 +259,7 @@ const newConfirmEmailToken = catchError(async (req,res,next)=>{
       return  res.redirect('http://localhost:4200/#/login') 
   }
 
-  let newToken = jwt.sign({email:user.email,name:user.name,id:user._id,role:user.role},process.env.SECRET_KEY , {expiresIn : 60 * 2})
+  let newToken = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 2})
 
   const link =`${req.protocol}://${req.headers.host}/api/v1/auth/confirmEmail/${newToken}`
   // const html = `<a href="${link}"> Confirm Email </a> `
@@ -382,7 +385,7 @@ max-width: 560px;" class="container">
     padding-top: 25px; 
     color: #000000;
     font-family: sans-serif;" class="paragraph">
-            Hi <span style= color:#3969d5>${user.name}</span> ,<br> In order to start using your new account, you need to confirm your email address.
+            Hi <span style= color:#3969d5>${uesr.name}</span> ,<br> In order to start using your new account, you need to confirm your email address.
           </td>
         </tr>
         <tr>
@@ -700,10 +703,11 @@ const signIn = catchError(async (req,res,next)=>{
   </html>
     `;
     // if (!(await sendEmail({ to: email, subject: "resetPassword", html })))  return next(new AppError("Email Rejected", 400));
-   if(await sendEmail({ to: email, subject: "resetPassword", html }))  return res.status(200).json({ message: "Success" });
-    return user
-      ? res.status(200).json({ message: "code send to your gmail successifuly" })
-      : next( AppError.Error("please register your account","failed", 401));
+   if(!(await sendEmail({ to: email ,subject: "resetPassword", html }))){
+    next( AppError.Error("Account rejeted","failed", 401));
+  }
+  return res.status(200).json({ message: "code send to your gmail successifuly" })
+``    
   });
   
  const CheckCode = catchError(async (req, res, next) => {

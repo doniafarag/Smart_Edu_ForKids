@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 
- const sendEmail = async ({from=process.env.EMAIL , to ,cc,bcc,subject,text,html,attachments=[]}={})=>{
+ const sendEmail = async ({ to ,cc,bcc,subject,text,html,attachments=[]}={})=>{
     const transporter = nodemailer.createTransport({
         service : "gmail",
         auth: {
@@ -11,7 +11,7 @@ import nodemailer from 'nodemailer'
       });
     
       const info = await transporter.sendMail({
-        from: `"Academy App" <${from}>`, // sender address
+        from: `"Academy App" <${process.env.EMAIL}>`, // sender address
         to, 
         cc,
         bcc,// list of receivers
@@ -21,6 +21,7 @@ import nodemailer from 'nodemailer'
         attachments
       });
       // console.log(info)
+      return info.rejected.length?false:true
 }
 
 export default sendEmail

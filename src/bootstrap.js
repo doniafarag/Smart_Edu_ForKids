@@ -15,7 +15,12 @@ import reviewRouter from "./modules/review/review.routes.js"
 
 
 export const bootstrap = (app,express)=>{
-    
+    app.use(cors())  // Allow Access From anyWhere
+
+    app.get('/',(req,res,next)=>{
+res.send("Welcome to ay 7haga")
+    })
+    app.use(express.json({}))
     app.use('/users',userRouter)
     app.use('/auth',authRouter)
     app.use('/subject',subjectRouter)
@@ -28,8 +33,7 @@ export const bootstrap = (app,express)=>{
     app.all('*',(req,res,next)=>{
         next(AppError.Error('not found endpoint',"fail",404))
     })
-    app.use(cors())  // Allow Access From anyWhere
-
+  
     app.use(globalError)
     dbConnection()
 }
