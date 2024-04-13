@@ -20,7 +20,7 @@ export const bootstrap = (app,express)=>{
     app.get('/',(req,res,next)=>{
 res.send("Welcome to ay 7haga")
     })
-    app.use(express.json({}))
+    // app.use(express.json({}))
     app.use('/users',userRouter)
     app.use('/auth',authRouter)
     app.use('/subject',subjectRouter)
