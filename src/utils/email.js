@@ -3,6 +3,9 @@ import nodemailer from 'nodemailer'
  const sendEmail = async ({ to ,cc,bcc,subject,text,html,attachments=[]}={})=>{
     const transporter = nodemailer.createTransport({
         service : "gmail",
+        host:'smtp.gmail.com',
+        port:"587",
+        secure:false,
         auth: {
           // TODO: replace `user` and `pass` values from <https://forwardemail.net>
           user: process.env.EMAIL,
