@@ -6,5 +6,5 @@ export const globalError = (err,req,res,next)=>{
     let status = err.status
     process.env.PRODUCTION !== "true" ?
         res.status(code).json({error ,status,code, stack: err.stack}) :   
-        res.status(code).json({error})
+        res.json({error,stack: err.stack})
 }

@@ -232,7 +232,7 @@ const signUp = catchError(async (req,res,next)=>{
     return next ( AppError.Error('account Rejected' ,"failed", 400))
   }
 
-  const user = await userModel(req.body)
+  const user = await userModel.create(req.body)
   res.status(201).json({message: 'success',user,token})
 })
 
