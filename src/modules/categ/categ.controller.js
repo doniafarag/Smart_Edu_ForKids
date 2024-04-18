@@ -65,7 +65,7 @@ const addAudioCateg = catchError(async (req,res,next)=>{
     //   { new: true }
     // );
     const {public_id , secure_url} = await cloudinary.uploader.upload(
-        req.file.path,
+        file.path,
          {folder: `smartEducational/categ/${req.params.id}/audio`,resource_type:"video"}
         )
    const categ = await catModel.findByIdAndUpdate(req.params.id,
