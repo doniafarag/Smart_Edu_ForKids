@@ -46,31 +46,31 @@ const addImageCateg = catchError(async (req,res,next)=>{
 })
 
 const addAudioCateg = catchError(async (req,res,next)=>{
-  const audiosResources = [];
+  // const audiosResources = [];
 
-    for (const file of req.files) {
-      const { public_id, secure_url } = await cloudinary.uploader.upload(
-        file.path,
-        {
-          folder: `smartEducational/categ/${req.params.id}/audio`,resource_type:"video"
-        },
-      );
+  //   for (const file of req.files) {
+  //     const { public_id, secure_url } = await cloudinary.uploader.upload(
+  //       file.path,
+  //       {
+  //         folder: `smartEducational/categ/${req.params.id}/audio`,resource_type:"video"
+  //       },
+  //     );
   
-     audiosResources.push({ public_id, secure_url });
-    }
+  //    audiosResources.push({ public_id, secure_url });
+  //   }
   
-    const categ = await catModel.findByIdAndUpdate(
-      req.params.id,
-      { video: audiosResources },
-      { new: true }
-    );
-  //   const {public_id , secure_url} = await cloudinary.uploader.upload(
-  //       req.file.path,
-  //        {folder: `smartEducational/categ/${req.params.id}/audio`,resource_type:"video"}
-  //       )
-  //  const categ = await catModel.findByIdAndUpdate(req.params.id,
-  //   {video:{public_id , secure_url}},
-  //   {new:true}) 
+    // const categ = await catModel.findByIdAndUpdate(
+    //   req.params.id,
+    //   { video: audiosResources },
+    //   { new: true }
+    // );
+    const {public_id , secure_url} = await cloudinary.uploader.upload(
+        req.file.path,
+         {folder: `smartEducational/categ/${req.params.id}/audio`,resource_type:"video"}
+        )
+   const categ = await catModel.findByIdAndUpdate(req.params.id,
+    {video:{public_id , secure_url}},
+    {new:true}) 
     const categ1= await catModel.findById(req.params.id)
     res.json({ message:"Done",categ1})
     

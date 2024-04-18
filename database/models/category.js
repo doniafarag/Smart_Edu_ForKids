@@ -7,13 +7,13 @@ const catSchema=new Schema({
    unitId:{type:Schema.Types.ObjectId,ref:"Unit",select:false},
    unitName:{type:String,select:false},
    lessonName:{type:String,required:true},
-   text:[{type:String}],
-   image:[{
+   text:{type:String},
+   image:{
       public_id:String , secure_url:String
-     }],
-   video:[{
+     },
+   video:{
       public_id:String , secure_url:String
-     }],
+     },
   
 
 });
