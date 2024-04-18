@@ -13,7 +13,7 @@ const catSchema=new Schema({
      },
    video:{
       public_id:String , secure_url:String
-     },
+   },
   
 
 });
