@@ -55,38 +55,7 @@ const userSchema = new Schema({
      resetCode: {type:String},
      codeCreatedAt:Date,
      //======================================
-//      ariabic: [
-//       {
-//           title: String,
-//           questions: [
-//               {
-//                   title: 'ques 1',
-//                   score: { type: Number } // score of original ques after right asnwer 
-//               },
-//               {
-//                   title: 'ques 2',
-//                   score: { type: Number } // score of original ques after right asnwer 
-//               },
-//           ],
-//           scoreOfLevel: { type: Number } // collect scores of questions
-//       },
-//       {
-//          type:String,
-//           questions: [
-//               {
-//                   title: 'ques 1',
-//                   score: { type: Number } // score of original ques after right asnwer 
-//               },
-//               {
-//                   title: 'ques 2',
-//                   score: { type: Number } // score of original ques after right asnwer 
-//               },
-//           ],
-//           scoreOfLevel: { type: Number } // collect scores of questions
-//       },
-      
-//   ],
-//   scoreOfArabic: { type: Number } // collect the scores of all levels
+//     
 
      
 
@@ -101,12 +70,12 @@ userSchema.pre('save',function(){
 
 userSchema.pre('save',function(){
     this.password=bcrypt.hashSync(this.password , 8);
-   console.log(this)
+   
 })
 
 userSchema.pre('findOneAndUpdate',function(){
    if( this._update.password)  this._update.password=bcrypt.hashSync(this._update.password , 8);
-  console.log(this)
+  
 })
 
 

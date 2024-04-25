@@ -1,3 +1,4 @@
+// import { array, string } from 'joi';
 import mongoose, { Schema, model } from 'mongoose';
 const QuesSchema=new Schema({
    subjectId:{type:Schema.Types.ObjectId,ref:"subject",select:false},
@@ -7,10 +8,9 @@ const QuesSchema=new Schema({
    unitId:{type:Schema.Types.ObjectId,ref:"Unit",select:false},
    unitName:{type:String,select:false},
    catId:{type:Schema.Types.ObjectId,ref:"Cat",select:false},
-   catName:{type:String},
-   content:{type:String,required:true},
-   image:[{type:String,required:false}],
-   record:{type:String,required:false},
+   lessonName:{type:String},
+   content:{type:Array,required:true},
+   images:[{public_id:String , secure_url:String}],
    answer:{type:String,required:true},
    score:{type:Number,required:true}
   
