@@ -7,7 +7,7 @@ const UserSubjectSchema=new Schema({
             titleOfLevel: String,
             questions: [
                 {
-                    titleOfQues: 'ques 1',
+                    titleOfQues: String,
                     scoreOfQues: { type: Number } // score of original ques after right asnwer 
                 },
                
