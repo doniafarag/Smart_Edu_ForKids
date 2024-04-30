@@ -5,5 +5,5 @@ import {addScorOFSub} from './userSub.controller.js'
 
 const userSubRouter=express.Router()
 
-userSubRouter.post("/addScore/:id",addScorOFSub)
+userSubRouter.post("/addScore",protectedRouter,allowedTo('user'),addScorOFSub)
 export default userSubRouter

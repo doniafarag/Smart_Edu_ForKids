@@ -8,14 +8,14 @@ import { catModel } from '../../../database/models/category.js'
 import cloudinary from '../../utils/cloudinary.js'
 
 
-const addQues= catchError(async(req,res)=>{
+const addQues= catchError(async(req,res,next)=>{
    
     const subjectName = req.body.subjectName
     const levelName =req.body.levelName
     const unitName =req.body.unitName
     const lessonName = req.body.lessonName
     const cat = await catModel.findOne({subjectName,levelName,unitName,lessonName})
-    // if(!cat) return new ( AppError.Error('cat not found' ,"failed", 409))
+    if(!cat) return  next(  AppError.Error('cat not found' ,"failed", 409))
     const catId = cat._id
     const subjectId = cat.subjectId
     const levelId = cat.levelId
@@ -50,13 +50,19 @@ const addImageQues= catchError(async (req,res,next)=>{
 })
 
 const getAllQues = catchError(async (req,res,next)=>{
-    let apiFeatures = new ApiFeatures( levelModel.find(), req.query)
-    .paginate().fields().filter().sort().search()
-  // execute query
-//   const  levels = await apiFeatures.mongooseQuery
-    const query = req.query
-    const  units = await unitModel.find(query)
-    res.status(201).json({message: 'success',page:apiFeatures.page , units})
+  const queryObj={...req.query};
+        const excluded=['page','sort','limit','fields'];
+        excluded.forEach(el => delete queryObj[el]);
+        const query= Ques.find(queryObj);
+        const ques=await query;
+    res.status(201).json({message: 'success', ques})
+//     let apiFeatures = new ApiFeatures( Ques.find(), req.query)
+//     .paginate().fields().filter().sort().search()
+//   // execute query
+// //   const  levels = await apiFeatures.mongooseQuery
+//     const query = req.query
+//     const  ques = await Ques.find(query)
+//     res.status(201).json({message: 'success',page:apiFeatures.page , ques})
     // console.log(req.params);
     // let filter = {}
     // if(req.params.subject){

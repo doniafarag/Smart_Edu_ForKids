@@ -9,11 +9,12 @@ const QuesSchema=new Schema({
    unitName:{type:String,select:false},
    catId:{type:Schema.Types.ObjectId,ref:"Cat",select:false},
    lessonName:{type:String},
+   quesName:{type:String},
    content:{type:Array,required:true},
    images:[{public_id:String , secure_url:String}],
    answer:{type:String,required:true},
-   score:{type:Number,required:true}
-  
+   score:{type:Number,required:true},
+   titleOfQues:{type:String,required:true},
 });
 
 export const Ques = model('Ques',QuesSchema)
