@@ -10,8 +10,8 @@ import { customAlphabet } from "nanoid";
 
 
 const signUp = catchError(async (req,res,next)=>{
-    console.log(req.protocol);
-    console.log(req.headers.host);
+    // console.log(req.protocol);
+    // console.log(req.headers.host);
     const {email,password,confirmPassword}=req.body;
     let isUser = await userModel.findOne({email})
     if(isUser) return next ( AppError.Error('account already exists' ,"failed", 409))
