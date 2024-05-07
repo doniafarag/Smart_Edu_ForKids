@@ -229,7 +229,7 @@ const signUp = catchError(async (req,res,next)=>{
     `;
     // =================================================
    if( !(await sendEmail({to:email , subject:"Confirmation Email" , html}))){
-    return next ( AppError.Error('account Rejected' ,"failed", 401))
+    return next ( AppError.Error('account Rejected' ,"failed", 400))
   }
 
   const user = await userModel.create(req.body)
