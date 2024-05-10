@@ -57,3 +57,35 @@ async function sendEmail({ to, cc, bcc, subject, html, attachments = [] } = {}) 
 
 
 export default sendEmail
+
+
+// import nodemailer from "nodemailer";
+// import xoauth2 from "xoauth2";
+
+// const transporter = nodemailer.createTransport({
+//           service : "gmail",
+//           auth: {
+//              xoauth2: xoauth2.createXOAuth2Generator({
+//               user: 'kif.dev@gmail.com',
+//               clientId:'',
+//               clientSecret:"",
+//               refreshToken:""
+//              })
+//           },
+//         });
+
+// const mailOptions ={
+//   from: 'kifer <kif.dev@gmail.com>',
+//   to :"mission.tawryd@gmail.com",
+//   subject:'Nodemailer test',
+//   text:"Hello World!!"
+
+// }
+
+// transporter.sendMail(mailOptions, function(err,res){
+//   if(err){
+//     console.log('Error');
+//   }else{
+//     console.log('Email sent');
+//   }
+// })
