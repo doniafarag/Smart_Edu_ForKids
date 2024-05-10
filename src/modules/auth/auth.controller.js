@@ -13,11 +13,11 @@ const signUp = catchError(async (req,res,next)=>{
     // console.log(req.protocol);
     // console.log(req.headers.host);
     const {email,password,confirmPassword}=req.body;
-    let isUser = await userModel.findOne({email})
-    if(isUser) return next ( AppError.Error('account already exists' ,"failed", 409))
+    // let isUser = await userModel.findOne({email})
+    // if(isUser) return next ( AppError.Error('account already exists' ,"failed", 409))
     if (password != confirmPassword) return next ( AppError.Error('password not equal confirmpassword',"failed" , 409))
-    // const user = new userModel(req.body)
-    // await user.save()
+    const user = new userModel(req.body)
+    await user.save()
     let token = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 5})
     let newConfirmEmailToken = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 60 * 24 * 30})
 //      const requestNewEmailLink =`${req.protocol}://${req.headers.host}/auth/newConfirmEmailToken/${newConfirmEmailToken}`
@@ -232,8 +232,8 @@ const signUp = catchError(async (req,res,next)=>{
 //     return next ( AppError.Error('account Rejected' ,"failed", 400))
 //   }
 
-  const user = await userModel.create(req.body)
-  res.status(201).json({message: 'success',user,token})
+  const user1 = await userModel.create(req.body)
+  res.status(201).json({message: 'success',user1,token})
 })
 
 const confirmEmail = catchError(async (req,res,next)=>{
