@@ -18,8 +18,8 @@ const signUp = catchError(async (req,res,next)=>{
     if (password != confirmPassword) return next ( AppError.Error('password not equal confirmpassword',"failed" , 409))
     const user = new userModel(req.body)
     await user.save()
-    let token = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 5})
-    let newConfirmEmailToken = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 60 * 24 * 30})
+    // let token = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 5})
+    // let newConfirmEmailToken = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 60 * 24 * 30})
 //      const requestNewEmailLink =`${req.protocol}://${req.headers.host}/auth/newConfirmEmailToken/${newConfirmEmailToken}`
 //      const link =`${req.protocol}://${req.headers.host}/auth/confirmEmail/${token}`
 //     // const html = `
