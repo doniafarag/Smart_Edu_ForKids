@@ -34,14 +34,14 @@ async function sendEmail({ to, cc, bcc, subject, html, attachments = [] } = {}) 
     let transporter = nodemailer.createTransport({
         service: 'gmail',
         auth: {
-            user: process.env.EMAIL, // generated ethereal user
-            pass: process.env.EMAIL_PASSWORD, // generated ethereal password
+            user: "faragdonia50@gmail.com", // generated ethereal user
+            pass: "nwcz iqms wnyv jxgn", // generated ethereal password
         },
     });
 
     // send mail with defined transport object
     let info = await transporter.sendMail({
-        from: `"Academy App" <${process.env.EMAIL}>`, // sender address
+        from:` "Academy App" <"faragdonia50@gmail.com">`, // sender address
         to,
         cc,
         bcc,

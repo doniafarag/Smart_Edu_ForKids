@@ -23,8 +23,6 @@ const addQues= catchError(async(req,res,next)=>{
     const ques = new Ques({...req.body,subjectId,subjectName,levelId,levelName,unitId,unitName,lessonName,catId})
     await ques.save()
     res.send(ques)
-    // !ques&& new( AppError.Error('ques not found',"faile",404))
-    // ques&& res.status(201).json({message: 'success',ques})
 })
 const addImageQues= catchError(async (req,res,next)=>{
   const imagesResources = [];
@@ -56,20 +54,8 @@ const getAllQues = catchError(async (req,res,next)=>{
         const query= Ques.find(queryObj);
         const ques=await query;
     res.status(201).json({message: 'success', ques})
-//     let apiFeatures = new ApiFeatures( Ques.find(), req.query)
-//     .paginate().fields().filter().sort().search()
-//   // execute query
-// //   const  levels = await apiFeatures.mongooseQuery
-//     const query = req.query
-//     const  ques = await Ques.find(query)
-//     res.status(201).json({message: 'success',page:apiFeatures.page , ques})
-    // console.log(req.params);
-    // let filter = {}
-    // if(req.params.subject){
-    //    filter={subject:req.params.subject}
-    // }
-    // const levels = await levelModel.find(filter)
-    // res.status(201).json({message: 'success',levels})
+   
+    
 })
 
 const getSingleQues = catchError(async (req,res,next)=>{

@@ -94,12 +94,7 @@ res.json({ message:"Done",categ1,file:req.file })
 })
 
 const getAllCategs = catchError(async (req,res,next)=>{
-//     let apiFeatures = new ApiFeatures( catModel.find(), req.query)
-//     .paginate().fields().filter().sort().search()
-//   // execute query
-// //   const  levels = await apiFeatures.mongooseQuery
-//     const query = req.query
-//     const  categs = await catModel.find(query)
+
 const queryObj={...req.query};
         const excluded=['page','sort','limit','fields'];
         excluded.forEach(el => delete queryObj[el]);

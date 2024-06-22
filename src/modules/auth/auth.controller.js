@@ -16,19 +16,10 @@ const signUp = catchError(async (req,res,next)=>{
     let isUser = await userModel.findOne({email})
     if(isUser) return next ( AppError.Error('account already exists' ,"failed", 409))
     if (password != confirmPassword) return next ( AppError.Error('password not equal confirmpassword',"failed" , 409))
-    // const user = new userModel(req.body)
-    // await user.save()
     let token = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 5})
     let newConfirmEmailToken = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 60 * 24 * 30})
      const requestNewEmailLink =`${req.protocol}://${req.headers.host}/auth/newConfirmEmailToken/${newConfirmEmailToken}`
      const link =`${req.protocol}://${req.headers.host}/auth/confirmEmail/${token}`
-    // const html = `
-    //  <a href="${link}"> Confirm Email </a>
-    //  <br>
-    //  <br>
-    //  <a href="${requestNewEmailLink}">Request New confirm email </a>
-    // `
-    // =================================================
     const html = `
     <html>
 
@@ -462,10 +453,8 @@ const signIn = catchError(async (req,res,next)=>{
     let user = await userModel.findOne({email})
     if(!user || !bcrypt.compareSync(password , user.password))
         return next ( AppError.Error('incorrect email or password' ,"failed", 409))
-
         let token = jwt.sign({email:user.email,name:user.name,id:user._id,role:user.role},process.env.SECRET_KEY)
-        res.status(201).json({message: 'success',user,token})
-    
+        res.status(201).json({message: 'success',user,token})  
 
 })
 
