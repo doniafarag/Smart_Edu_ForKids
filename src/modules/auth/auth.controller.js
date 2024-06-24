@@ -16,7 +16,7 @@ const signUp = catchError(async (req,res,next)=>{
     let isUser = await userModel.findOne({email})
     if(isUser) return next ( AppError.Error('account already exists' ,"failed", 409))
     if (password != confirmPassword) return next ( AppError.Error('password not equal confirmpassword',"failed" , 409))
-    let token = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 5})
+    let token = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 20})
     let newConfirmEmailToken = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 60 * 24 * 30})
      const requestNewEmailLink =`${req.protocol}://${req.headers.host}/auth/newConfirmEmailToken/${newConfirmEmailToken}`
      const link =`${req.protocol}://${req.headers.host}/auth/confirmEmail/${token}`
@@ -251,7 +251,7 @@ const newConfirmEmailToken = catchError(async (req,res,next)=>{
       return  res.redirect('http://localhost:4200/#/login') 
   }
 
-  let newToken = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 2})
+  let newToken = jwt.sign({email},process.env.SECRET_KEY , {expiresIn : 60 * 15})
 
   const link =`${req.protocol}://${req.headers.host}/api/v1/auth/confirmEmail/${newToken}`
   // const html = `<a href="${link}"> Confirm Email </a> `
@@ -697,7 +697,7 @@ const signIn = catchError(async (req,res,next)=>{
     next( AppError.Error("Account rejeted","failed", 401));
   }
   return res.status(200).json({ message: "code send to your gmail successifuly" })
-``    
+   
   });
   
  const CheckCode = catchError(async (req, res, next) => {
