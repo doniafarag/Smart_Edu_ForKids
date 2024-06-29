@@ -5,7 +5,7 @@ import { catchError } from '../../utils/catchError.js'
 import { unitModel } from '../../../database/models/unit.js'
 import { catModel } from '../../../database/models/category.js'
 import cloudinary from '../../utils/cloudinary.js'
-import { typingLetters } from '../../../database/models/typingLetters.js'
+import { typingLetters} from '../../../database/models/typingLetters.js'
 
 
 const addTyping= catchError(async(req,res,next)=>{
@@ -19,31 +19,20 @@ const addTyping= catchError(async(req,res,next)=>{
     const subjectId = cat.subjectId
     const levelId = cat.levelId
     const unitId = cat.unitId
-    const typingLetters = new typingLetters({...req.body,subjectId,subjectName,levelId,levelName,unitId,unitName,lessonName,catId})
-    await typingLetters.save()
-    res.send(typingLetters)
+    const typingQues = new typingLetters({...req.body,subjectId,subjectName,levelId,levelName,unitId,unitName,lessonName,catId})
+    await typingQues.save()
+    res.send(typingQues)
 })
 const addImageQues= catchError(async (req,res,next)=>{
-  const imagesResources = [];
-
-    for (const file of req.files) {
-      const { public_id, secure_url } = await cloudinary.uploader.upload(
-        file.path,
-        {
-          folder: `smartEducational/ques/${req.params.id}/image`,
-        },
-      );
-  
-      imagesResources.push({ public_id, secure_url });
-    }
-  
-    const ques = await typingLetters.findByIdAndUpdate(
-      req.params.id,
-      { images: imagesResources },
-      { new: true }
-    );
-    const ques1= await typingLetters.findById(req.params.id)
-    res.json({ message:"Done",ques1 })
+  const {public_id , secure_url} = await cloudinary.uploader.upload(
+    req.file.path,
+     {folder: `smartEducational/categ/${req.params.id}/image`}
+    )
+const typingQues = await typingLetters.findByIdAndUpdate(req.params.id,
+{image:{public_id , secure_url}},
+{new:true}) 
+const typingQues1= await typingLetters.findById(req.params.id)
+res.json({ message:"Done",typingQues1,file:req.file })
 })
 
 const getAllQues = catchError(async (req,res,next)=>{

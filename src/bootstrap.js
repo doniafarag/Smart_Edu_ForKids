@@ -13,6 +13,7 @@ import quesRouter from "./modules/question/ques.router.js"
 import reviewRouter from "./modules/review/review.routes.js"
 import userSubRouter from "./modules/userSubject/userSub.router.js"
 import matchingRouter from "./modules/Matching/match.router.js"
+import typingRouter from "./modules/typingQues/typing.router.js"
 
 
 export const bootstrap = (app,express)=>{
@@ -32,6 +33,7 @@ res.send("Welcome to ay 7haga")
     app.use('/review',reviewRouter)
     app.use('/userSubject',userSubRouter)
     app.use('/match',matchingRouter)
+    app.use('/typingLetter',typingRouter)
     // app.use("/uploads",express.static('./uploads'))
     app.all('*',(req,res,next)=>{
         next(AppError.Error('not found endpoint',"fail",404))

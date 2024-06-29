@@ -8,10 +8,12 @@ const typingSchema=new Schema({
    unitId:{type:Schema.Types.ObjectId,ref:"Unit",select:false},
    unitName:{type:String,select:false},
    catId:{type:Schema.Types.ObjectId,ref:"Cat",select:false},
-   // lessonName:{type:String},
+   lessonName:{type:String},
    titleOfQues:{type:String},
-   text:{type:Array,required:true},
-   images:[{public_id:String , secure_url:String}],
+   text:{type:String},
+   image:{
+      public_id:String , secure_url:String
+     },
    userAnswer:{type:String},
    score:{type:Number,required:true},
 });
