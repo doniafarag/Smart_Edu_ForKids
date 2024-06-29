@@ -730,7 +730,29 @@ const signIn = catchError(async (req,res,next)=>{
     }
   });
 // ========================================================
-
+const loginWithGmail=catchError(async (req,res,next)=>{
+  const user = await userModel.findOne({
+    email: req.body.email.toLowerCase()
+  });
+  if(user){
+     if(user.provider != 'google'){
+        return next( AppError.Error("In-valid provider true provider is ${user.provider}","faield",400))
+     }
+  const newToken = jwt.sign({ id: user._id, role: user.role },process.env.jwt_KEY);
+  return res.status(200).json({message: "user logged in successfully",user: user,token: newToken});
+  }
+  const customPassword =customAlphabet('123456789hhjgfdghyjuklkjuhygtfrdsdfgtyhlkjh',9)
+  const newUser = new userModel({
+    email: req.body.email,
+    userName: req.body.userName,
+    provider: "google",
+    password: customPassword(),
+  })
+  await newUser.save();
+  const newToken = jwt.sign({ id: newUser._id, role: newUser.role },process.env.jwt_KEY);
+  return res.status(200).json({message: "user logged in successfully",user: newUser,token: newToken});
+});
+//========================================================
 const protectedRouter =catchError(async (req,res,next)=>{
     let token = req.headers.token
     if (!token) return next( AppError.Error("error in token or error not provided","failed" , 401))
@@ -770,7 +792,8 @@ export{
     CheckCode,
     RestePassword,
     protectedRouter,
-    allowedTo
+    allowedTo,
+    loginWithGmail
 }
 
 

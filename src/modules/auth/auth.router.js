@@ -11,6 +11,7 @@ authRouter.post('/signup',validate(signUpValidation) ,auth.signUp)
 authRouter.get('/confirmEmail/:token',auth.confirmEmail)
 authRouter.get('/newConfirmEmailToken/:token',auth.newConfirmEmailToken)
 authRouter.post('/signin',validate(signInValidation),auth. signIn)
+authRouter.post('/loginWithGmail',auth.loginWithGmail);
 // authRouter.post('/forgetpassword',auth.forgetPassword)
 // authRouter.post('/resetPassword/:newToken',auth.resetPassword)
 authRouter.patch('/forgetPassword',validate(forgetPasswordValidation),auth.forgetPassword)

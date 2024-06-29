@@ -30,6 +30,8 @@
     "nanoid": "^5.0.5",
     "nodemailer": "^6.9.7",
     "nodemon": "^3.0.3",
+    "passport": "^0.7.0",
+    "passport-google-oauth2": "^0.2.0",
     "xoauth2": "^1.2.0"
   }
 }

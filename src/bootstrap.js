@@ -12,6 +12,7 @@ import categRouter from "./modules/categ/categ.router.js"
 import quesRouter from "./modules/question/ques.router.js"
 import reviewRouter from "./modules/review/review.routes.js"
 import userSubRouter from "./modules/userSubject/userSub.router.js"
+import matchingRouter from "./modules/Matching/match.router.js"
 
 
 export const bootstrap = (app,express)=>{
@@ -30,6 +31,7 @@ res.send("Welcome to ay 7haga")
     app.use('/ques',quesRouter)
     app.use('/review',reviewRouter)
     app.use('/userSubject',userSubRouter)
+    app.use('/match',matchingRouter)
     // app.use("/uploads",express.static('./uploads'))
     app.all('*',(req,res,next)=>{
         next(AppError.Error('not found endpoint',"fail",404))

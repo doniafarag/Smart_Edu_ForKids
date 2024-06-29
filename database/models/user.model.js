@@ -43,6 +43,11 @@ const userSchema = new Schema({
       type:Boolean,
       default:false
     },
+    provider:{
+      type:String,
+      enum:['system','facebook','google'],
+      default:'system'
+  },
      role:{
         type:String,
         enum:['user','admin'],
