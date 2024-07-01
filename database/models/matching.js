@@ -24,10 +24,10 @@ import mongoose, { Schema, model } from 'mongoose';
 
 //  });
 
-const optionSchema = new Schema({
-    name :{type: String},
-    img:{public_id:String , secure_url:String}
-})
+// const optionSchema = new Schema({
+//     name :{type: String},
+//     img:{public_id:String , secure_url:String}
+// })
 
 const MatchQuestionSchema=new Schema({
     subjectId:{type:Schema.Types.ObjectId,ref:"subject",select:false},
@@ -37,16 +37,11 @@ const MatchQuestionSchema=new Schema({
     unitId:{type:Schema.Types.ObjectId,ref:"Unit",select:false},
     unitName:{type:String,select:false},
     catId:{type:Schema.Types.ObjectId,ref:"Cat",select:false},
-    // lessonName:{type:String},
-    question:{type: String},
-    letters:[String],
-    options:[optionSchema],
-    correctOptions:[
-        {
-            letter:{type: String},
-            optionId:{type:Schema.Types.ObjectId},
-        }
-    ]
+    lessonName:{type:String,select:false},
+    questionName:{type: String},
+    letter:{type: String},
+    image:{ secure_url:String}
+
     
 
  });

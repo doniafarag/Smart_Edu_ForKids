@@ -26,26 +26,16 @@ const addMatching= catchError(async(req,res,next)=>{
     res.send(matching)
 })
 const addImageMatching= catchError(async (req,res,next)=>{
-  const imagesResources = [];
+  const {public_id , secure_url} = await cloudinary.uploader.upload(
+    req.file.path,
+     {folder: `smartEducational/categ/${req.params.id}/image`}
+    )
+const match = await MatchQuestion.findByIdAndUpdate(req.params.id,
+{image:{public_id , secure_url}},
+{new:true}) 
+const match1= await MatchQuestion.findById(req.params.id)
+res.json({ message:"Done",match1,file:req.file })
 
-    for (const file of req.files) {
-      const { public_id, secure_url } = await cloudinary.uploader.upload(
-        file.path,
-        {
-          folder: `smartEducational/matching/${req.params.id}/image`,
-        },
-      );
-  
-      imagesResources.push({ public_id, secure_url });
-    }
-  
-    const matching = await MatchQuestion.findByIdAndUpdate(
-      req.params.id,
-      { images: imagesResources },
-      { new: true }
-    );
-    const matching1= await MatchQuestion.findById(req.params.id)
-    res.json({ message:"Done",matching1 })
 })
 
 const getAllMatching = catchError(async (req,res,next)=>{
@@ -78,20 +68,20 @@ const removeMatching =  catchError( async (req,res,next)=> {
     matching && res.status(201).json({message: 'success',matching})
     })
 
-const Submit =  catchError( async (req,res,next)=> {
-  const {selectedOptions} = req.body;
-  const id = req.params.id
-  const question = await MatchQuestion.findById(id)
-  if (!question){
-     return next(AppError.Error("Question not found" , 'failed',404))
-  }
-  const isCorrect = selectedOptions.every(selectedOption=>{
-     const correctOption = question.correctOptions.find(co=>co.letter == selectedOption.letter);
-     return correctOption && correctOption.optionId.toString()== selectedOption.optionId;
-  });
+// const Submit =  catchError( async (req,res,next)=> {
+//   const {selectedOptions} = req.body;
+//   const id = req.params.id
+//   const question = await MatchQuestion.findById(id)
+//   if (!question){
+//      return next(AppError.Error("Question not found" , 'failed',404))
+//   }
+//   const isCorrect = selectedOptions.every(selectedOption=>{
+//      const correctOption = question.correctOptions.find(co=>co.letter == selectedOption.letter);
+//      return correctOption && correctOption.optionId.toString()== selectedOption.optionId;
+//   });
 
-  return res.status(200).json({correct:isCorrect});
-   })
+//   return res.status(200).json({correct:isCorrect});
+//    })
     
 
 
@@ -102,7 +92,7 @@ export{
     getSingleMatching,
     getAllMatching,
     removeMatching,
-    Submit
+    // Submit
 }
 
 
