@@ -736,7 +736,7 @@ const loginWithGmail=catchError(async (req,res,next)=>{
   });
   if(user){
      if(user.provider != 'google'){
-        return next( AppError.Error("In-valid provider true provider is ${user.provider}","faield",400))
+        return next( AppError.Error(`"In-valid provider true provider is ${user.provider}"`,"faield",400))
      }
   const newToken = jwt.sign({ id: user._id, role: user.role },process.env.jwt_KEY);
   return res.status(200).json({message: "user logged in successfully",user: user,token: newToken});
