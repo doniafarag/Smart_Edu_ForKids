@@ -39,8 +39,8 @@ const MatchQuestionSchema=new Schema({
     catId:{type:Schema.Types.ObjectId,ref:"Cat",select:false},
     lessonName:{type:String,select:false},
     questionName:{type: String},
-    letter:{type: String},
-    image:{ secure_url:String}
+    content:{type:Array,required:true},
+    images:[{public_id:String , secure_url:String}],
 
     
 

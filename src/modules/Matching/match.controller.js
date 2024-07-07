@@ -26,15 +26,26 @@ const addMatching= catchError(async(req,res,next)=>{
     res.send(matching)
 })
 const addImageMatching= catchError(async (req,res,next)=>{
-  const {public_id , secure_url} = await cloudinary.uploader.upload(
-    req.file.path,
-     {folder: `smartEducational/categ/${req.params.id}/image`}
-    )
-const match = await MatchQuestion.findByIdAndUpdate(req.params.id,
-{image:{public_id , secure_url}},
-{new:true}) 
-const match1= await MatchQuestion.findById(req.params.id)
-res.json({ message:"Done",match1,file:req.file })
+    const imagesResources = [];
+
+    for (const file of req.files) {
+      const { public_id, secure_url } = await cloudinary.uploader.upload(
+        file.path,
+        {
+          folder: `smartEducational/match/${req.params.id}/image`,
+        },
+      );
+  
+      imagesResources.push({ public_id, secure_url });
+    }
+  
+    const matching = await MatchQuestion.findByIdAndUpdate(
+      req.params.id,
+      { images: imagesResources },
+      { new: true }
+    );
+    const matching1= await MatchQuestion.findById(req.params.id)
+    res.json({ message:"Done",matching1 })
 
 })
 
