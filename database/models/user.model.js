@@ -41,7 +41,6 @@ const userSchema = new Schema({
      },
      experience:{
          type:Number,
-         default:0,
    },
      confirmEmail:{
       type:Boolean,

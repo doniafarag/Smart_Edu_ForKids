@@ -7,7 +7,7 @@ import sendEmail from '../../utils/email.js'
 import cryptoRandomString from 'crypto-random-string'
 import moment from 'moment/moment.js'
 import { customAlphabet } from "nanoid";
-
+import OAuth2Client from 'passport-google-oauth2'
 
 const signUp = catchError(async (req,res,next)=>{
     // console.log(req.protocol);
@@ -752,6 +752,53 @@ const loginWithGmail=catchError(async (req,res,next)=>{
   const newToken = jwt.sign({ id: newUser._id, role: newUser.role },process.SECRET_KEY);
   return res.status(200).json({message: "user logged in successfully",user: newUser,token: newToken});
 });
+//  const loginWithGmail= catchError(
+//   async(req,res,next)=>{
+//       const {idToken} = req.body
+//       const client = new OAuth2Client(process.env.CLIENT_ID);
+//       async function verify() {
+//           const ticket = await client.verifyIdToken({
+//               idToken,
+//               audience: process.env.CLIENT_ID,
+//           });
+//           const payload = ticket.getPayload();
+//           return payload
+//       }
+//       const {given_name, family_name, email_verified, picture, email} = await verify()
+      
+//       if(!email_verified) return next(new AppError('Email not verified with Google', 409 ) )
+      
+//       const user = await userModel.findOne({email,  provider: "Google"})
+//       // LoginUser
+//       if(user){
+//           const token = jwt.sign({
+//               name: user.name,
+//               email: user.email,
+//               id: user._id,
+//               role: user.role},
+//               process.env.SECRET_KEY)
+
+//           return res.status(200).json({message:" Success", token})    
+//       }
+//       // SignupUser
+//       const SignupUser = await userModel.create({
+//           name: given_name,
+//           email,
+//           image: picture,
+//           isVerified: email_verified,
+//           password: bcrypt.hashSync(nanoid(6), +process.env.SALT_ROUND),
+//           provider: "Google"
+//       })
+//       const token = jwt.sign({
+//           name: SignupUser.name,
+//           email: SignupUser.email,
+//           id: SignupUser._id,
+//           role: SignupUser.role},
+//           process.env.SECRET_KEY)
+
+//       return res.status(201).json({message: "Success", token})
+//   }
+// )
 //========================================================
 const protectedRouter =catchError(async (req,res,next)=>{
     let token = req.headers.token
